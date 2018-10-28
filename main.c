@@ -1,6 +1,5 @@
 
 /* Source: K&R */
-
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -21,14 +20,16 @@ void fsize(char *name)
   struct stat stbuf;
 
   if (stat(name, &stbuf) == -1) {
-    fprintf(stdout, "yo %s\n",strerror( errno )); // hem hem
+    //fprintf(stdout, "yo %s\n",strerror( errno )); // hem hem
     fprintf(stderr, "fsize: can't access %s\n", name);
     return;
   }
-  if ((stbuf.st_mode & S_IFMT) == S_IFDIR)
+  if (S_ISDIR(stbuf.st_mode)) //((stbuf.st_mode & S_IFMT) == S_IFDIR)
     dirwalk(name, fsize);
   printf("%8ld %s\n", stbuf.st_size, name);
 }
+
+// void katon_copy_no_jutsu();
 
 void dirwalk(char *dir, void (*fcn)(char *))
 {
@@ -53,8 +54,44 @@ void dirwalk(char *dir, void (*fcn)(char *))
   closedir(dfd);
 }
 
+/*
+int ultra_ls(files)
+{
+  while(--count > 0)
+    list_file(file)
+}
+
+int process_file(??, pointer on processing function) //eg. ultra_ls, ultra_cp
+{
+  if is_dir
+    dirwalk
+  else
+    processing_function
+}
+
+int katon_copy_no_jutsu()
+{
+
+}
+
+*/
+
 int main(int argc, char **argv)
 {
+  /*
+  1. Récupère paramètres (sources et dest)
+  2. Copie fichiers (chaque source dans dest)
+    1. si fichier: copie
+    2. si dossier: dirwalk avec fonction copie
+  3. Liste fichiers de dest
+    Fonction liste avec dirwalk
+
+  fetch_args(&sources, &dest);
+  katon_copy_no_jutsu(sources, dest);
+  ultra_ls(dest);
+
+  */
+
   if (argc == 1)
     fsize(".");
   else
