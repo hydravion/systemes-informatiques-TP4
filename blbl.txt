@@ -1,0 +1,3 @@
+/* Source: K&R */
+
+#define NAME_MAX 14
